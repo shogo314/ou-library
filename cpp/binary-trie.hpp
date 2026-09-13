@@ -135,7 +135,7 @@ template <unsigned int d, typename T = unsigned long long> class BinaryTrie {
             NodePtr &z_ptr = cur_ptr->children[0];
             NodePtr &o_ptr = cur_ptr->children[1];
             assert(state > 0);
-            if (state == 1 || (state == 3 && n < z_ptr->subcnt)) {
+            if (state == 1 || (state == 3 && n < (int)z_ptr->subcnt)) {
                 cur_ptr = z_ptr;
             } else {
                 n -= (state & 1 ? z_ptr->subcnt : 0);
