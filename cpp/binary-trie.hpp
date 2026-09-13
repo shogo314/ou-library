@@ -1,15 +1,16 @@
 #pragma once
 
 #include <assert.h>
+#include <limits>
 #include <memory>
 #include <utility>
-#include <limits>
 
 /**
  * @brief 符号なし整数の多重集合を管理する
  * @tparam `d` 扱う整数値のビット幅。Tの桁以下であることを要請
  */
-template <unsigned int d, typename T = unsigned long long> class BinaryTrie {
+template <unsigned int d, typename T = unsigned long long>
+class BinaryTrie {
     static_assert(std::numeric_limits<T>::is_integer);
     static_assert(!std::numeric_limits<T>::is_signed);
     static_assert(d <= std::numeric_limits<T>::digits, "d must be T digits or less");
@@ -44,7 +45,7 @@ template <unsigned int d, typename T = unsigned long long> class BinaryTrie {
   public:
     /**
      * @brief 集合にnを追加 (O(d))
-     */  
+     */
     void insert(T n) {
         NodePtr cur_ptr = root_ptr;
         while (!cur_ptr->is_leaf()) {
