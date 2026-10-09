@@ -1,6 +1,7 @@
 #define PROBLEM "https://yukicoder.me/problems/9177"
 
 #include "../cpp/lazy-segtree.hpp"
+#include <algorithm>
 #include <iostream>
 
 int main() {

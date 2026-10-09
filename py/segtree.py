@@ -160,23 +160,21 @@ class SegTree(Generic[S]):
         if r == 0:
             return 0
         r += self.sz
-        while r % 2 == 0:
-            r >>= 1
         sm = self.e
-        while f(self.op(self.data[r-1], sm)):
-            sm = self.op(self.data[r-1], sm)
+        while True:
             r -= 1
-            while r % 2 == 0:
+            while r > 1 and r % 2 == 1:
                 r >>= 1
-            if r == 1:
+            if not f(self.op(self.data[r], sm)):
+                while r < self.sz:
+                    r = r*2 + 1
+                    if f(self.op(self.data[r], sm)):
+                        sm = self.op(self.data[r], sm)
+                        r -= 1
+                return r + 1 - self.sz
+            sm = self.op(self.data[r], sm)
+            if r & -r == r:
                 return 0
-        while r < self.sz:
-            if not f(self.op(self.data[r*2-1], sm)):
-                r = r*2
-            else:
-                sm = self.op(self.data[r*2-1], sm)
-                r = r*2-1
-        return r-self.sz
 
     def __str__(self) -> str:
         re: List[str] = []

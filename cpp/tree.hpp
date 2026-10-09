@@ -6,6 +6,7 @@
 */
 
 #include <algorithm>
+#include <cassert>
 #include <stack>
 #include <tuple>
 
@@ -34,7 +35,6 @@ struct Tree : private Graph<Cost> {
     using Graph<Cost>::Graph;
     using Graph<Cost>::add_edge;
     using Graph<Cost>::add_directed_edge;
-    using Graph<Cost>::read;
     using Graph<Cost>::operator[];
     using Graph<Cost>::edges;
     using Graph<Cost>::shortest_path;
@@ -330,6 +330,8 @@ struct DoublingClimbTree : private RootedTree<Cost> {
      * @return int k回登った頂点
      */
     int climb(int u, int k) const {
+        assert(k >= 0);
+        if(k > this->unweighted_depth[u]) return -1;
         for(int i = 0; i < h; i++) {
             if(k >> i & 1) u = doubling_par[i][u];
             if(u == -1) return -1;
