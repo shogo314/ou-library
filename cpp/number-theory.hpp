@@ -11,6 +11,8 @@
  * @return long long
  */
 long long modinv(long long a, long long MOD) {
+    a %= MOD;
+    if (a < 0) a += MOD;
     long long b = MOD, u = 1, v = 0;
     while (b) {
         long long t = a / b;
@@ -30,8 +32,9 @@ long long modinv(long long a, long long MOD) {
  * @return long long
  */
 long long modpow(long long a, long long n, long long MOD) {
-    long long res = 1;
+    long long res = 1 % MOD;
     a %= MOD;
+    if (a < 0) a += MOD;
     if(n < 0) {
         n = -n;
         a = modinv(a, MOD);
@@ -80,9 +83,9 @@ std::pair<long long, long long> crt(const std::vector<long long>& r, const std::
     if(r.size() == 0) return {0, 1};
     int n = (int)r.size();
     long long m_lcm = m[0];
-    long long ans = r[0] % m[0];
+    long long ans = (r[0] % m[0] + m[0]) % m[0];
     for (int i = 1; i < n; i++) {
-        long long rr = r[i] % m[i], mm = m[i];
+        long long rr = (r[i] % m[i] + m[i]) % m[i], mm = m[i];
         coprimize_simulaneous_congruence_equation(ans, m_lcm, rr, mm);
         if(m_lcm == -1) return {-1, -1};
         long long t = ((rr - ans) * modinv(m_lcm, mm)) % mm;
@@ -170,10 +173,9 @@ namespace NTT {
      * @brief 畳み込みのサイズを2のべき乗にする
      */
     int get_fft_size(int N, int M) {
-        int size_a = 1, size_b = 1;
-        while (size_a < N) size_a <<= 1;
-        while (size_b < M) size_b <<= 1;
-        return std::max(size_a, size_b) << 1;
+        int size = 1;
+        while (size < N + M - 1) size <<= 1;
+        return size;
     }
 
     /**
@@ -291,7 +293,7 @@ template<class mint> std::vector<mint> convolution
         c2[i] = a2[i] * b2[i];
     }
     NTT::trans(c0, true), NTT::trans(c1, true), NTT::trans(c2, true);
-    static const mint mod0 = NTT::MOD0, mod01 = mod0 * NTT::MOD1;
+    const mint mod0 = NTT::MOD0, mod01 = mod0 * NTT::MOD1;
     std::vector<mint> res(N + M - 1);
     for (int i = 0; i < N + M - 1; ++ i) {
         int y0 = c0[i].value();

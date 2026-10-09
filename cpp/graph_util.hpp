@@ -133,6 +133,7 @@ bool has_acyclic(const Graph<Cost>& graph) {
  */
 template <typename Cost, typename T>
 Cost minimum_steiner_tree(const Graph<Cost>& G, const std::vector<T>& X, Cost inf = -1) {
+    if (X.empty()) return Cost{};
     std::vector<std::vector<Cost>> dp(G.n, std::vector<Cost>(1 << X.size(), inf));
     for (int p = 0; p < X.size(); p++) dp[X[p]][1 << p] = {};
     for (int i = 0; i < (1 << X.size()); i++) {

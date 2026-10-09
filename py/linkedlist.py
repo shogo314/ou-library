@@ -145,6 +145,8 @@ class LinkedList:
         lを先頭に追加する。\\
         LinkedListならO(1)、それ以外はO(len(l))。
         """
+        if not l:
+            return
         self.size += l.size
         if self.begin is self.end:
             self.begin = l.begin
@@ -188,12 +190,12 @@ class LinkedList:
         """
         指定した位置の前に追加する
         """
-        self.size += 1
         if i is self.begin:
             self.appendleft(v)
-        if i is self.end:
+        elif i is self.end:
             self.append(v)
         else:
+            self.size += 1
             j = i.prev
             itr = LinkedListElement(v, j, i)
             j.next = itr
@@ -204,10 +206,10 @@ class LinkedList:
         指定したものを削除する
         """
         assert(i is not self.end)
-        self.size -= 1
         if i is self.begin:
             self.popleft()
         else:
+            self.size -= 1
             j = i.next
             i = i.prev
             i.next = j

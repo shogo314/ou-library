@@ -154,6 +154,9 @@ template<class T, class OperatorProperty = matrix::OperatorPropertyDefault<T>> s
      */
     [[nodiscard]]
     Matrix shift(int dy, int dx) noexcept {
+        if(n == 0 || m == 0) return *this;
+        dy = (dy % n + n) % n;
+        dx = (dx % m + m) % m;
         std::vector<std::vector<T>> ret = v;
         for(int i = 0, ni = dy; i < n; i ++, ni ++) {
             if(ni >= n) ni = 0;
@@ -272,7 +275,8 @@ template<class T, class OperatorProperty = matrix::OperatorPropertyDefault<T>> s
      * @return @c *this
     */
     Matrix &operator*=(const Matrix &B) {
-        int p = B[0].size();
+        assert(m == B.n);
+        int p = B.m;
         Matrix C(n, p);
         for(int i = 0; i < n; i ++) {
             for(int k = 0; k < m; k ++) {
@@ -318,7 +322,8 @@ template<class T, class OperatorProperty = matrix::OperatorPropertyDefault<T>> s
     */
     [[nodiscard]]
     friend std::vector<T> operator*(const Matrix &A, const std::vector<T> &B) {
-        std::vector<T> ret(A.n, 0);
+        assert(A.m == (int)B.size());
+        std::vector<T> ret(A.n, OperatorProperty::zero());
         for(int i = 0; i < A.n; i ++) {
             for(int j = 0; j < A.m; j ++) {
                 ret[i] = OperatorProperty::add(ret[i], OperatorProperty::mul(A[i][j], B[j]));
@@ -335,7 +340,8 @@ template<class T, class OperatorProperty = matrix::OperatorPropertyDefault<T>> s
     */
     [[nodiscard]]
     friend std::vector<T> operator*(const std::vector<T> &A, const Matrix &B) {
-        std::vector<T> ret(B.m, 0);
+        assert((int)A.size() == B.n);
+        std::vector<T> ret(B.m, OperatorProperty::zero());
         for(int i = 0; i < B.n; i ++) {
             for(int j = 0; j < B.m; j ++) {
                 ret[j] = OperatorProperty::add(ret[j], OperatorProperty::mul(A[i], B[i][j]));
