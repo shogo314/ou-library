@@ -81,8 +81,11 @@ template<class T, class OperatorProperty = matrix::OperatorPropertyDefault<T>> s
         v = A;
         return *this;
     }
-    bool operator == (const Matrix &A) noexcept {
+    bool operator == (const Matrix &A) const noexcept {
         return this->v == A.v;
+    }
+    bool operator != (const Matrix &A) const noexcept {
+        return this->v != A.v;
     }
 
     /**

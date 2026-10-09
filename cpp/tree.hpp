@@ -165,7 +165,7 @@ struct RootedTree : private Tree<Cost> {
     /**
      * @brief Treeから根付き木を構築するコンストラクタ(コピー)
      *
-     * @param tree Tree
+     * @param tree Tree 頂点数1以上
      * @param root 根
      */
     RootedTree(const Tree<Cost>& tree, int root) : Tree<Cost>(tree), root(root) {
@@ -204,6 +204,8 @@ struct RootedTree : private Tree<Cost> {
 private:
     void build() {
         int n = this->n;
+        assert(n > 0);
+        assert(0 <= root && root < n);
         par.resize(n);
         par[root] = {root, -1, 0, -1};
         child.resize(n);
