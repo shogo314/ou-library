@@ -147,15 +147,27 @@ class ModintBase:
     def __pow__(self, n: int):
         return self._type(pow(self._value, n, self._mod))
 
-    def __eq__(self, y: Union["ModintBase", int]) -> bool:
+    def __eq__(self, y: object) -> bool:
         if isinstance(y, self._type):
-            y = y._value
-        return self._value == y
+            return self._value == y._value
+        if isinstance(y, int):
+            return self._value == y % self._mod
+        return NotImplemented
 
-    def __ne__(self, y: Union["ModintBase", int]) -> bool:
-        if isinstance(y, self._type):
-            y = y._value
-        return self._value != y
+    def __ne__(self, y: object) -> bool:
+        res = self.__eq__(y)
+        return res if res is NotImplemented else not res
+
+    def __hash__(self) -> int:
+        # 同じ値の Modint 同士、および [0, mod) の int とは hash が一致する
+        # += などは自身を書き換えるので、set や dict のキーにしたものは書き換えないこと
+        return hash(self._value)
+
+    def __bool__(self) -> bool:
+        return self._value != 0
+
+    def __int__(self) -> int:
+        return self._value
 
     def __str__(self) -> str:
         """保持する値を文字列に変換します。

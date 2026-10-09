@@ -10,7 +10,7 @@
  * @param MOD long long
  * @return long long
  */
-long long modinv(long long a, long long MOD) {
+inline long long modinv(long long a, long long MOD) {
     a %= MOD;
     if (a < 0) a += MOD;
     long long b = MOD, u = 1, v = 0;
@@ -31,7 +31,7 @@ long long modinv(long long a, long long MOD) {
  * @param MOD long long
  * @return long long
  */
-long long modpow(long long a, long long n, long long MOD) {
+inline long long modpow(long long a, long long n, long long MOD) {
     long long res = 1 % MOD;
     a %= MOD;
     if (a < 0) a += MOD;
@@ -55,7 +55,7 @@ long long modpow(long long a, long long n, long long MOD) {
  * @param m2 long long
  * @note 矛盾する場合、r1 = r2 = m1 = m2 = -1となる
  */
-void coprimize_simulaneous_congruence_equation(long long& r1, long long& m1, long long& r2, long long& m2) {
+inline void coprimize_simulaneous_congruence_equation(long long& r1, long long& m1, long long& r2, long long& m2) {
     long long g = std::gcd(m1, m2);
     if((r2 - r1) % g != 0) {
         r1 = r2 = m1 = m2 = -1;
@@ -78,7 +78,7 @@ void coprimize_simulaneous_congruence_equation(long long& r1, long long& m1, lon
  * @param m vector<long long> modの配列
  * @return std::pair<long long, long long> (解, LCM) 解なしのときは{-1, -1}
  */
-std::pair<long long, long long> crt(const std::vector<long long>& r, const std::vector<long long>& m) {
+inline std::pair<long long, long long> crt(const std::vector<long long>& r, const std::vector<long long>& m) {
     assert(r.size() == m.size());
     if(r.size() == 0) return {0, 1};
     int n = (int)r.size();
@@ -103,7 +103,7 @@ std::pair<long long, long long> crt(const std::vector<long long>& r, const std::
  * @param MOD long long
  * @return std::pair<long long, long long> (最小解 % MOD, LCM % MOD) 解なしのときは{-1, -1}
  */
-std::pair<long long, long long> crt(const std::vector<long long>& r, const std::vector<long long>& m, long long MOD) {
+inline std::pair<long long, long long> crt(const std::vector<long long>& r, const std::vector<long long>& m, long long MOD) {
     assert(r.size() == m.size());
     if(r.size() == 0) return {0, 1};
     int n = (int)r.size();
@@ -139,7 +139,7 @@ namespace NTT {
      * @param MOD int
      * @return int
      */
-    int calc_primitive_root(int MOD) {
+    inline int calc_primitive_root(int MOD) {
         if (MOD == 2) return 1;
         if (MOD == 167772161) return 3;
         if (MOD == 469762049) return 3;
@@ -172,7 +172,7 @@ namespace NTT {
     /**
      * @brief 畳み込みのサイズを2のべき乗にする
      */
-    int get_fft_size(int N, int M) {
+    inline int get_fft_size(int N, int M) {
         int size = 1;
         while (size < N + M - 1) size <<= 1;
         return size;
@@ -310,7 +310,7 @@ template<class mint> std::vector<mint> convolution
  * @param B vector<long long>
  * @return vector<long long>
  */
-std::vector<long long> convolution_ll
+inline std::vector<long long> convolution_ll
 (const std::vector<long long>& A, const std::vector<long long>& B) {
     if (A.empty() || B.empty()) return {};
     int N = (int) A.size(), M = (int) B.size();

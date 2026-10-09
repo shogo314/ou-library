@@ -124,8 +124,15 @@ std::vector<int> topological_sort(const Graph<Cost>& G) {
  * @return bool サイクルをもつならtrue、非巡回ならfalseを返す。
  */
 template <typename Cost = int>
-bool has_acyclic(const Graph<Cost>& graph) {
-    return topological_sort(graph).size() < graph.n;
+bool has_cycle(const Graph<Cost>& graph) {
+    return (int)topological_sort(graph).size() < graph.n;
+}
+/**
+ * @deprecated has_cycle を使うこと(名前と意味が逆に読めるため改名した)
+ */
+template <typename Cost = int>
+[[deprecated("use has_cycle")]] bool has_acyclic(const Graph<Cost>& graph) {
+    return has_cycle(graph);
 }
 
 /**

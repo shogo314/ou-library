@@ -21,10 +21,10 @@ struct Graph {
      * for (int dst : g[v]) とすると、vから出る辺の行き先が列挙される
      */
     struct Edge {
-        int src;   //!< 始点
-        int dst;   //!< 終点
-        Cost cost; //!< コスト
-        int id;    //!< 辺の番号(追加された順、無向辺の場合はidが同じで方向が逆のものが2つ存在する)
+        int src = -1;   //!< 始点
+        int dst = -1;   //!< 終点
+        Cost cost = {}; //!< コスト
+        int id = -1;    //!< 辺の番号(追加された順、無向辺の場合はidが同じで方向が逆のものが2つ存在する)
         Edge() = default;
         Edge(int src, int dst, Cost cost = 1, int id = -1) : src(src), dst(dst), cost(cost), id(id) {}
         operator int() const { return dst; }
